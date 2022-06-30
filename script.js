@@ -1,3 +1,7 @@
+
+
+
+// gameboard related shenanigans
 const gameBoard = (() => {
     let board = [
         '','','',  // 0, 1, 2
@@ -45,6 +49,20 @@ const gameBoard = (() => {
 })();
 
 
+// deals with menus, buttons, and displays outside the game board
+const displayController = (() =>{
+    
+    const container = document.getElementById('info-container');
+
+    const changeText = (str) => container.textContent = str;
+
+    return{
+        changeText
+    }
+})();
+
+
+// controls game flow and is the big papa module
 const gameController = (() => {
 
     // returns player object whose turn it is
@@ -96,8 +114,8 @@ const gameController = (() => {
                     _getActivePlayer().addMove(i); // adds board index to player moves
 
                     if (_checkForWin(_getActivePlayer().getMoves())){
-                        console.log(_getActivePlayer().name + ' wins!');
                         gameOver = true;
+                        displayController.changeText(_getActivePlayer().name + ' wins!');
                     }
 
                     changePlayerTurns();
@@ -113,6 +131,9 @@ const gameController = (() => {
         changePlayerTurns
     };
 })();
+
+
+
 
 
 const Player = (name, sign, goesFirst) => {

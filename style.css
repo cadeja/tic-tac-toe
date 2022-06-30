@@ -93,6 +93,13 @@ html, body {
 
 .info-container {
     grid-area: 3 / 2 / 4 / 2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* margin-top: 20px; */
+    font-size: 2em;
 }
 
 .footer {
