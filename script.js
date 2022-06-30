@@ -56,6 +56,31 @@ const displayController = (() =>{
 
     const changeText = (str) => container.textContent = str;
 
+
+    // day/night theme toggle
+    let theme = 'dark';
+    const _themeToggle = () => {
+        const root = document.querySelector(':root');
+        if (theme == 'dark'){
+            theme = 'light';
+            root.style.setProperty('--base-color', '#bbbebd');
+            root.style.setProperty('--content-color', '#0e1112');
+            root.style.setProperty('--button-hover-color','#d4dad8');
+        } else if (theme == 'light'){
+            theme = 'dark';
+            root.style.setProperty('--base-color', '#0e1112');
+            root.style.setProperty('--content-color', '#bbbebd');
+            root.style.setProperty('--button-hover-color','#212729');
+        }
+    };
+
+    const _themeToggleEvent = () => {
+        const btn = document.getElementById('theme-toggle');
+        btn.addEventListener('click',_themeToggle);
+    };
+
+    _themeToggleEvent();
+
     return{
         changeText
     }
