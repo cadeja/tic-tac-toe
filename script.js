@@ -11,9 +11,12 @@ const gameBoard = (() => {
     const _createSpaces = () => {
         const gameContainer = document.getElementById('game');
         for (let i = 0; i < 9; i++){
+
             const div = document.createElement('div');
+
             div.setAttribute('class','game-space');
             div.setAttribute('id',`space-${i}`);
+
             gameContainer.appendChild(div);
         }
     }
