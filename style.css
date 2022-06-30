@@ -13,7 +13,7 @@ html, body {
     display: grid;
     height: 100%;
     grid-template-columns: 1fr max(40%, 300px) 1fr;
-    grid-template-rows: 200px 2fr 50px;
+    grid-template-rows: 200px 2fr 2fr 50px;
 
 
     background-color: var(--base-color);
@@ -34,16 +34,25 @@ html, body {
     background-color: var(--base-color);
 }
 
+
+.content-container-container {
+    grid-area: 2 / 2 / 2 / 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .content-container {
 
-    grid-area: 2 / 2 / 2 / 2;
+    /*grid-area: 2 / 2 / 2 / 2;*/
+    width: min(100%, 500px);
+
 }
 
 .game-container {
     display: inline-block;
     position: relative;
     width: 100%;
-    border: 0px;
 }
   
 .dummy {
@@ -83,10 +92,14 @@ html, body {
     font-size: 42px;
 }
 
+.info-container {
+    grid-area: 3 / 2 / 4 / 2;
+}
+
 .footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    grid-area: 3 / 1 / 4 / 4;
+    grid-area: 4 / 1 / 5 / 4;
 }
 
