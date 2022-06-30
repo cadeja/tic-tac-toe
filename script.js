@@ -4,6 +4,8 @@ const gameBoard = (() => {
         '','','',  // 3, 4, 5
         '','',''   // 6, 7, 8
     ]
+    
+    const getBoard = () => board;
 
     //creates divs for gameboard
     const _createSpaces = () => {
@@ -13,17 +15,6 @@ const gameBoard = (() => {
             div.setAttribute('class','game-space');
             div.setAttribute('id',`space-${i}`);
             gameContainer.appendChild(div);
-        }
-    }
-
-    const _setSpaceEventListeners = () => {
-        for (let i = 0; i < 9; i++) {
-            const space = document.getElementById(`space-${i}`);
-            space.addEventListener('click', () => {
-                if (board[i] == ''){
-                    writeBoard(i, playersign);
-                }
-            });
         }
     }
 
@@ -40,49 +31,110 @@ const gameBoard = (() => {
         loadBoard();
     }
 
-
     // INITIALIZE BOARD
     _createSpaces();
-    _setSpaceEventListeners();
 
     return {
         loadBoard,
-        writeBoard
+        writeBoard,
+        getBoard
     };
 })();
 
+
 const gameController = (() => {
 
+    // returns player object whose turn it is
+    const _getActivePlayer = () => playerOne.getTurn() == true ? playerOne : playerTwo;
 
-    const _changePlayerTurns = () => {
+
+    const changePlayerTurns = () => {
+        // switches turn bools
         playerOne.switchTurn();
         playerTwo.switchTurn();
+
+        // sets playersign
+        playerOne.getTurn() == true ? playersign = playerOne.sign : playersign = playerTwo.sign;
     };
 
 
-    const _winConditions = [[0,1,2],[3,4,5],[6,7,8], // row wins
-                            [0,3,6],[1,4,7],[2,5,8], // column wins
-                            [0,4,7],[2,4,6]];        // diagonal wins
 
-    //const checkForWin = () => {
+    // sets of indices for win conditions
+    const _winConditions = [
+        [0,1,2],[3,4,5],[6,7,8], // row wins
+        [0,3,6],[1,4,7],[2,5,8], // column wins
+        [0,4,8],[2,4,6]          // diagonal wins
+    ];
 
-    //};
+    // check for win by comparing array of player moves with _winConditions array
+    const _checkForWin = (playerMoves) => {
+        for (let i = 0; i < _winConditions.length; i++){
+            
+            if (
+                playerMoves.includes(_winConditions[i][0]) &&
+                playerMoves.includes(_winConditions[i][1]) &&
+                playerMoves.includes(_winConditions[i][2])) {
+                    return true;
+                }
+        }
+        return false;
+    };
+
+
+    // THE MAIN EVENT
+    let gameOver = false;
+    const _setSpaceEventListeners = () => {
+        for (let i = 0; i < 9; i++) {
+            const space = document.getElementById(`space-${i}`);
+            space.addEventListener('click', () => {
+                if (gameBoard.getBoard()[i] == '' && !gameOver){  // make sure space is empty
+                    gameBoard.writeBoard(i, playersign); // puts player sign on space
+
+                    _getActivePlayer().addMove(i); // adds board index to player moves
+
+                    if (_checkForWin(_getActivePlayer().getMoves())){
+                        console.log(_getActivePlayer().name + ' wins!');
+                        gameOver = true;
+                    }
+
+                    changePlayerTurns();
+                }
+            });
+        }
+    }
+
+    // SET EVENT
+    _setSpaceEventListeners();
+
+    return {
+        changePlayerTurns
+    };
 })();
 
 
 const Player = (name, sign, goesFirst) => {
+
+    // turn stuff
     let isMyTurn = goesFirst;
-
     const switchTurn = () => isMyTurn = !isMyTurn;
-
     const getTurn = () => isMyTurn;
 
-    return { name, sign, getTurn, switchTurn };
+    // player move indices
+    let moves = [];
+    const addMove = (index) => moves.push(index);
+    const getMoves = () => moves;
+
+    return {
+        name,
+        sign,
+        getTurn,
+        switchTurn,
+        addMove,
+        getMoves
+    };
 };
+
 
 const playerOne = Player('Cade', 'x', true);
 const playerTwo = Player('Mark', 'o', false);
-
-console.log(playerOne.getTurn());
-playerOne.switchTurn();
-console.log(playerOne.getTurn());
+let playersign = playerOne.sign;
