@@ -1,14 +1,16 @@
-html, body {
-    padding: 0;
-    margin: 0;
-    height: 100vh;
-}
-
 :root {
     --base-color: #0e1112;
     --content-color: #bbbebd;
 
     --button-hover-color: #212729;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+
+    background-color: var(--base-color);
 }
 
 .theme-toggle {
@@ -111,15 +113,97 @@ html, body {
     font-size: 42px;
 }
 
+/* FORM SECTION AND SUCH */
+
 .info-container {
     grid-area: 3 / 2 / 4 / 2;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
     /* margin-top: 20px; */
     font-size: 2em;
+
+    margin: 30px 0px 10px 0px;
+}
+
+.menu {
+
+    padding: 20px;
+    height: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+}
+
+textarea:focus, input:focus {
+    outline: none;
+}
+
+.name {
+
+    align-self: center;
+    justify-self: center;
+    height: 20px;
+    padding: 5px;
+    width: 200px;
+
+    border-radius: 9999px;
+
+    text-align: center;
+
+    background-color: var(--base-color);
+    color: var(--content-color);
+    border-color: var(--content-color);
+    border-style: solid;
+
+    font-family: 'Courier New', Courier, monospace;
+    font-size: .7em;
+}
+
+.color-selector {
+
+    align-self: center;
+    justify-self: center;
+
+
+    height: 25px;
+    width: 25px;
+    border-radius: 9999px;
+    border: 2px solid var(--content-color)
+}
+
+#start-game {
+    grid-area: 3 / 1 / 4 / 4;
+    justify-self: center;
+    align-self: center;
+
+    height: 50px;
+    width: 50px;
+
+    background-color: var(--base-color);
+    border-style: solid;
+    border-color: var(--content-color);
+    color: var(--content-color);
+
+}
+
+#start-game:hover{
+    background-color: var(--button-hover-color);
+}
+
+path {
+    fill: var(--content-color);
 }
 
 .footer {
