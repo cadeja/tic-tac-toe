@@ -53,7 +53,6 @@ const gameBoard = (() => {
 const displayController = (() =>{
     
     const container = document.getElementById('info-container');
-
     const changeText = (str) => container.textContent = str;
 
 
@@ -80,6 +79,33 @@ const displayController = (() =>{
     };
 
     _themeToggleEvent();
+
+
+    // FORM STUFF
+
+    // gets player names from form
+    const getPlayerName = (player) => {  //player: 'one' or 'two'
+        const playerName = document.getElementById(`player-${player}-name`);
+
+        return playerName.value;
+    }
+
+    // start button event
+    const startButtonEvent = () => {
+        const btn = document.getElementById('start-game');
+        btn.addEventListener('click', () => {
+            playerOneName = getPlayerName('one');
+            playerTwoName = getPlayerName('two');
+            if (playerOneName != ''){
+                playerOne.name = playerOneName;
+            }
+            if (playerTwoName != ''){
+                playerTwo.name = playerTwoName;
+            }
+        });
+    }
+
+    startButtonEvent();
 
     return{
         changeText
@@ -172,6 +198,7 @@ const Player = (name, sign, goesFirst) => {
     let moves = [];
     const addMove = (index) => moves.push(index);
     const getMoves = () => moves;
+    const getName = () => name;
 
     return {
         name,
@@ -179,11 +206,12 @@ const Player = (name, sign, goesFirst) => {
         getTurn,
         switchTurn,
         addMove,
-        getMoves
+        getMoves,
+        getName
     };
 };
 
 
-const playerOne = Player('Cade', 'x', true);
-const playerTwo = Player('Mark', 'o', false);
+const playerOne = Player('Player One', 'x', true);
+const playerTwo = Player('Player Two', 'o', false);
 let playersign = playerOne.sign;
