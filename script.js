@@ -131,13 +131,14 @@ const displayController = (() =>{
     };
 
 
+    const getColorSelector = (n) => { // 1 or 2 for argument
+        return document.getElementById(`color-selector-${n}`).style.backgroundColor;
+    };
+
     // color selector
     const setPlayerColor = () => {
-        const colorOne = document.getElementById('color-selector-1');
-        playerOne.setColor(colorOne.style.backgroundColor);
-
-        const colorTwo = document.getElementById('color-selector-2');
-        playerTwo.setColor(colorTwo.style.backgroundColor);
+        playerOne.setColor(getColorSelector(1));
+        playerTwo.setColor(getColorSelector(2));
     };
 
 
@@ -167,7 +168,8 @@ const displayController = (() =>{
     return{
         changeText,
         turnMessage,
-        displayRestartButton
+        displayRestartButton,
+        getColorSelector
     }
 })();
 
@@ -284,6 +286,6 @@ const Player = (name, sign, goesFirst, color) => {
 };
 
 
-const playerOne = Player('Player One', 'x', true, 'purple');
-const playerTwo = Player('Player Two', 'o', false, 'yellow');
+const playerOne = Player('Player One', 'x', true, displayController.getColorSelector(1));
+const playerTwo = Player('Player Two', 'o', false, displayController.getColorSelector(2));
 let playersign = playerOne.sign;

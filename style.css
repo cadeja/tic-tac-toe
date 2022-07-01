@@ -215,12 +215,6 @@ textarea:focus, input:focus {
 }
 
 
-
-path {
-    fill: var(--content-color);
-}
-
-
 .play-again-button {
     margin: 20px;
     padding: 5px 10px;
