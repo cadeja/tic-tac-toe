@@ -38,13 +38,29 @@ const gameBoard = (() => {
         loadBoard();
     }
 
+    const clearGame = () => {
+        board = [
+            '','','',  // 0, 1, 2
+            '','','',  // 3, 4, 5
+            '','',''   // 6, 7, 8
+        ]
+
+        gameController.resetGame();
+        writeBoard();
+        displayController.turnMessage();
+        playerOne.resetMoves();
+        playerTwo.resetMoves();
+
+    };
+
     // INITIALIZE BOARD
     _createSpaces();
 
     return {
         loadBoard,
         writeBoard,
-        getBoard
+        getBoard,
+        clearGame
     };
 })();
 
@@ -81,6 +97,14 @@ const displayController = (() =>{
     _themeToggleEvent();
 
 
+    // display turn message
+    const turnMessage = () => {
+        const container = document.getElementById('info-container');
+        container.textContent = `${gameController.getActivePlayer().name}'s Turn`;
+    }
+
+
+
     // FORM STUFF
 
     // gets player names from form
@@ -90,7 +114,15 @@ const displayController = (() =>{
         return playerName.value;
     }
 
-    // start button event
+
+    const displayRestartButton = () => {
+        const container = document.getElementById('info-container');
+        container.innerHTML += '<button class="play-again-button" id="play-again-button">Play Again?</button>';
+        const btn = document.getElementById('play-again-button');
+        btn.addEventListener('click',gameBoard.clearGame);
+    };
+
+
     const startButtonEvent = () => {
         const btn = document.getElementById('start-game');
         btn.addEventListener('click', () => {
@@ -102,13 +134,18 @@ const displayController = (() =>{
             if (playerTwoName != ''){
                 playerTwo.name = playerTwoName;
             }
+
+            turnMessage();
+
         });
     }
 
     startButtonEvent();
 
     return{
-        changeText
+        changeText,
+        turnMessage,
+        displayRestartButton
     }
 })();
 
@@ -117,7 +154,7 @@ const displayController = (() =>{
 const gameController = (() => {
 
     // returns player object whose turn it is
-    const _getActivePlayer = () => playerOne.getTurn() == true ? playerOne : playerTwo;
+    const getActivePlayer = () => playerOne.getTurn() == true ? playerOne : playerTwo;
 
 
     const changePlayerTurns = () => {
@@ -152,6 +189,8 @@ const gameController = (() => {
         return false;
     };
 
+    const resetGame = () => gameOver = false;
+
 
     // THE MAIN EVENT
     let gameOver = false;
@@ -162,14 +201,18 @@ const gameController = (() => {
                 if (gameBoard.getBoard()[i] == '' && !gameOver){  // make sure space is empty
                     gameBoard.writeBoard(i, playersign); // puts player sign on space
 
-                    _getActivePlayer().addMove(i); // adds board index to player moves
+                    getActivePlayer().addMove(i); // adds board index to player moves
 
-                    if (_checkForWin(_getActivePlayer().getMoves())){
+                    if (_checkForWin(getActivePlayer().getMoves())){
                         gameOver = true;
-                        displayController.changeText(_getActivePlayer().name + ' wins!');
+                        displayController.changeText(getActivePlayer().name + ' wins!');
+                        displayController.displayRestartButton();
+                    } else {
+                        changePlayerTurns();
+                        displayController.turnMessage();
                     }
 
-                    changePlayerTurns();
+                    
                 }
             });
         }
@@ -179,7 +222,9 @@ const gameController = (() => {
     _setSpaceEventListeners();
 
     return {
-        changePlayerTurns
+        changePlayerTurns,
+        getActivePlayer,
+        resetGame
     };
 })();
 
@@ -199,6 +244,7 @@ const Player = (name, sign, goesFirst) => {
     const addMove = (index) => moves.push(index);
     const getMoves = () => moves;
     const getName = () => name;
+    const resetMoves = () => moves = [];
 
     return {
         name,
@@ -207,7 +253,8 @@ const Player = (name, sign, goesFirst) => {
         switchTurn,
         addMove,
         getMoves,
-        getName
+        getName,
+        resetMoves
     };
 };
 
