@@ -3,6 +3,7 @@
     --content-color: #bbbebd;
 
     --button-hover-color: #212729;
+
 }
 
 /* * {
@@ -15,6 +16,7 @@ html, body {
     height: 100vh;
 
     background-color: var(--base-color);
+    overflow: hidden;
 }
 
 
@@ -46,7 +48,7 @@ button:hover{
     display: grid;
     height: 100%;
     grid-template-columns: 1fr max(40%, 300px) 1fr;
-    grid-template-rows: 200px 2fr 2fr 50px;
+    grid-template-rows: 200px 1fr 1fr;
 
 
     background-color: var(--base-color);
@@ -132,6 +134,7 @@ button:hover{
 
 .info-container {
     grid-area: 3 / 2 / 4 / 2;
+    margin-bottom: 10%;
 
     display: flex;
     flex-direction: column;
@@ -196,6 +199,8 @@ textarea:focus, input:focus {
     border: 2px solid var(--content-color)
 }
 
+
+
 #start-game {
     grid-area: 3 / 1 / 4 / 4;
     justify-self: center;
@@ -228,9 +233,17 @@ path {
 
 
 .footer {
+    position: fixed;
+    bottom:0;
+
+    width: 100%;
+    height: 30px;
+
     display: flex;
-    justify-content: center;
     align-items: center;
-    grid-area: 4 / 1 / 5 / 4;
+    justify-content: center;
+
+    background-color: var(--base-color);
+
 }
 

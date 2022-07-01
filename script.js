@@ -28,7 +28,15 @@ const gameBoard = (() => {
     // loads board array and displays x's and o's
     const loadBoard = () => {
         for (let i = 0; i < 9; i++){
-            document.getElementById(`space-${i}`).textContent = board[i];
+            const space = document.getElementById(`space-${i}`);
+            space.textContent = board[i];
+
+            // controls color
+            if (space.textContent == 'x'){
+                space.setAttribute('style',`color: ${playerOne.getColor()};`);
+            } else if (space.textContent == 'o'){
+                space.setAttribute('style',`color: ${playerTwo.getColor()};`);
+            }
         }
     }
 
@@ -123,9 +131,23 @@ const displayController = (() =>{
     };
 
 
+    // color selector
+    const setPlayerColor = () => {
+        const colorOne = document.getElementById('color-selector-1');
+        playerOne.setColor(colorOne.style.backgroundColor);
+
+        const colorTwo = document.getElementById('color-selector-2');
+        playerTwo.setColor(colorTwo.style.backgroundColor);
+    };
+
+
+    // start button
     const startButtonEvent = () => {
         const btn = document.getElementById('start-game');
         btn.addEventListener('click', () => {
+
+            setPlayerColor();
+
             playerOneName = getPlayerName('one');
             playerTwoName = getPlayerName('two');
             if (playerOneName != ''){
@@ -232,12 +254,16 @@ const gameController = (() => {
 
 
 
-const Player = (name, sign, goesFirst) => {
+const Player = (name, sign, goesFirst, color) => {
 
     // turn stuff
     let isMyTurn = goesFirst;
+
     const switchTurn = () => isMyTurn = !isMyTurn;
     const getTurn = () => isMyTurn;
+
+    const getColor = () => color;
+    const setColor = (newColor) => color = newColor;
 
     // player move indices
     let moves = [];
@@ -249,16 +275,15 @@ const Player = (name, sign, goesFirst) => {
     return {
         name,
         sign,
-        getTurn,
-        switchTurn,
-        addMove,
-        getMoves,
+        color,
+        getTurn,switchTurn,
+        addMove, getMoves, resetMoves,
         getName,
-        resetMoves
+        getColor, setColor
     };
 };
 
 
-const playerOne = Player('Player One', 'x', true);
-const playerTwo = Player('Player Two', 'o', false);
+const playerOne = Player('Player One', 'x', true, 'purple');
+const playerTwo = Player('Player Two', 'o', false, 'yellow');
 let playersign = playerOne.sign;
